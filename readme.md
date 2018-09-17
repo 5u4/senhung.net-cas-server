@@ -30,13 +30,7 @@ An authentication server for all senhung.net user register/login.
 **Check email existence**
 
 ```
-POST {{senhung-auth-host}}/v1/api/auth/existence/email
-
-REQUEST:
-
-{
-    "email": "alex@senhung.net"
-}
+GET {{senhung-auth-host}}/v1/api/auth/email/:email/existence
 
 RESPONSE:
 
@@ -48,13 +42,7 @@ RESPONSE:
 **Check username existence**
 
 ```
-POST {{senhung-auth-host}}/v1/api/auth/existence/username
-
-REQUEST:
-
-{
-    "username": "myusername"
-}
+GET {{senhung-auth-host}}/v1/api/auth/username/:username/existence
 
 RESPONSE:
 
@@ -104,6 +92,26 @@ RESPONSE:
 
 {
     "token": "somerandomjsonwebtoken",
+    "user": {
+        "id": "5b9ec3fbbea9303db19896a2",
+        "username": "myusername",
+        "email": "alex@senhung.net"
+    }
+}
+```
+
+**Get user**
+
+```
+GET {{senhung-auth-host}}/v1/api/auth/users
+
+HEADERS:
+
+x-access-token: {{senhung-auth-token}}
+
+RESPONSE:
+
+{
     "user": {
         "id": "5b9ec3fbbea9303db19896a2",
         "username": "myusername",
