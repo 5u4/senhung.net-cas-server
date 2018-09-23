@@ -16,7 +16,10 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 /* routes */
-app.use('/api', require('../routes/api'));
+app.use('/v1/api', require('../routes/api'));
+
+/* connect to database */
+require('../database/connections').default;
 
 /* handle exceptions */
 app.use(Handler);
