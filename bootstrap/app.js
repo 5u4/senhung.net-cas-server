@@ -21,6 +21,9 @@ app.use('/v1/api', require('../routes/api'));
 /* connect to database */
 require('../database/connections').default;
 
+/* connect to session database */
+require('../database/session');
+
 /* handle exceptions */
 app.use(Handler);
 
