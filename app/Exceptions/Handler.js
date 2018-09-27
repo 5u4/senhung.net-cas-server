@@ -1,12 +1,12 @@
 const { HttpException } = require('@senhung/http-exceptions');
 
 const Handler = (err, req, res, next) => {
-    /* handle http error exception */
+    /* Handle http error exception */
     if (err instanceof HttpException) {
         return res.status(err.getStatusCode()).json(err.getMessage() ? {message: err.getMessage()} : {});
     }
 
-    /* handle validation errors */
+    /* Handle validation errors */
     if (err instanceof Error && err.errors) {
         return res.status(err.status).json({
             message: err.message,
@@ -14,7 +14,7 @@ const Handler = (err, req, res, next) => {
         });
     }
 
-    /* handle general errors */
+    /* Handle general errors */
     res.sendStatus(500);
 };
 

@@ -1,5 +1,5 @@
 const router         = require('express').Router();
-const AuthController = require('../../app/Http/Controllers/AuthController');
+const AuthController = require('../app/Http/Controllers/AuthController');
 
 const {
     checkEmailExistenceValidator,
@@ -7,7 +7,7 @@ const {
     registerValidator,
     loginValidator,
     getUserValidator,
-} = require('../../app/Validators/AuthValidator');
+} = require('../app/Validators/AuthValidator');
 
 router.get('/email/:email/existence', checkEmailExistenceValidator, AuthController.checkEmailExistence);
 router.get('/username/:username/existence', checkUsernameExistenceValidator, AuthController.checkUsernameExistence);
