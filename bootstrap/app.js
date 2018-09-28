@@ -10,6 +10,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+/* Proxy setting */
+app.set('trust proxy', true);
+
 /* Console log api */
 if (process.env.NODE_ENV !== 'test') {
     app.use(morgan('dev'));

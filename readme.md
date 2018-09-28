@@ -119,3 +119,7 @@ RESPONSE:
     }
 }
 ```
+
+## Note
+
+Mongodb is used as a redis server since renting a redis server costs a lot every month. Sessions are stored in the mongodb.

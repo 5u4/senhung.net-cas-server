@@ -2,6 +2,7 @@ const jwt       = require('jsonwebtoken');
 const bcrypt    = require('bcrypt');
 const User      = require('../../Models/User').UserModel;
 const jwtConfig = require('../../../configs/jwt');
+const Session   = require('../../Models/Session').SessionModel;
 
 /**
  * Check if the user has the right credentials
@@ -21,12 +22,45 @@ const isCorrectCredential = async (user, testPassword) => {
  * Expire time can be set at /configs/jwt.expiresIn
  *
  * @param {String} userId The user that is going to be signed with a token
+ * @param {String} ip The client ip
  *
  * @returns {String} The auth token
  */
-const signAuthToken = (userId) => {
-    return jwt.sign({id: userId}, jwtConfig.jwtsecret, {
+const signAuthToken = async (userId, ip) => {
+    const token = jwt.sign({id: userId}, jwtConfig.jwtsecret, {
         expiresIn: jwtConfig.expiresIn,
+    });
+
+    await signSession(token, ip, jwtConfig.expiresIn);
+
+    return token;
+};
+
+/**
+ * Create a session
+ * 
+ * @param {String} token The user token
+ * @param {String} ip The client ip
+ * @param {Number} extendedSeconds The extend time in second
+ */
+const signSession = async (token, ip, extendedSeconds) => {
+    const expiredAt = new Date().getTime() / 1000 | 0 + extendedSeconds;
+
+    await Session.create({
+        token: token,
+        ip: ip,
+        expired_at: expiredAt,
+    });
+};
+
+/**
+ * Removes all expired session records in database
+ */
+const cleanUpExpiredSessions = async () => {
+    const current = new Date().getTime() / 1000 | 0;
+
+    await Session.deleteMany({
+        expired_at: { $lte: current },
     });
 };
 
@@ -52,5 +86,6 @@ const getUser = async (token) => {
 module.exports = {
     isCorrectCredential,
     signAuthToken,
+    cleanUpExpiredSessions,
     getUser,
 };

@@ -1,23 +1,23 @@
 const mongoose = require('mongoose');
 
 /**
- * @property {ApiKey} api_key
+ * @property {String} token
+ * @property {String} ip
+ * @property {Number} expired_at
  */
 const Session = new mongoose.Schema({
-    api_key: ApiKey,
-});
+    token: {
+        type: String,
+        required: true,
+    },
 
-/**
- * @property {String} ip
- * @property {String} expired_at
- */
-const ApiKey = new mongoose.Schema({
     ip: {
         type: String,
     },
 
     expired_at: {
-        type: String,
+        type: Number,
+        required: true,
     },
 });
 

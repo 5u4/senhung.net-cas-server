@@ -86,9 +86,11 @@ const login = async (req, res, next) => {
         return next(new ForbiddenHttpException('Please validate your email.'));
     }
 
+    AuthService.cleanUpExpiredSessions();
+
     /* response */
     res.json({
-        token: await AuthService.signAuthToken(user._id),
+        token: await AuthService.signAuthToken(user._id, req.ip),
         user: UserTransformer.make(user),
     });
 };
