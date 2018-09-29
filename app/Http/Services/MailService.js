@@ -2,23 +2,14 @@ const nodemailer = require('nodemailer');
 const mailConfig = require('../../../configs/mail');
 const ejs        = require('ejs');
 
-const transportConfigs = process.env.NODE_ENV === 'test'
-    ? {
-        host: mailConfig.test.host,
-        port: mailConfig.test.port,
-        auth: {
-            user: mailConfig.test.user,
-            pass: mailConfig.test.password,
-        },
-    }
-    : {
-        service: 'gmail',
-        secure: false,
-        auth: {
-            user: mailConfig.gmail.user,
-            pass: mailConfig.gmail.password,
-        },
-    };
+const transportConfigs = {
+    service: 'gmail',
+    secure: false,
+    auth: {
+        user: mailConfig.gmail.user,
+        pass: mailConfig.gmail.password,
+    },
+};
 
 const transporter = nodemailer.createTransport(transportConfigs);
 
@@ -66,6 +57,11 @@ const sendEmail = async (email, subject, text, html) => {
         text: text,
         html: html,
     };
+
+    /* In test environment, skip mail sending */
+    if (process.env.NODE_ENV === 'test') {
+        return;
+    }
 
     await transporter.sendMail(mailOptions);
 };

@@ -3,6 +3,7 @@ const UserService     = require('../Services/UserService');
 const User            = require('../../Models/User').UserModel;
 const UserTransformer = require('../Transformers/UserTransformer');
 const MailService     = require('../Services/MailService');
+const authConfig      = require('../../../configs/auth');
 
 const { 
     BadRequestHttpException, 
@@ -129,7 +130,7 @@ const verifyEmail = async (req, res, next) => {
 
     const token = await AuthService.signAuthToken(user, req.ip);
 
-    res.status(200).cookie('authtoken', token).send('Your email is now verified!');
+    res.status(200).cookie(authConfig.cookieKey, token).send('Your email is now verified!');
 };
 
 /**
@@ -168,8 +169,7 @@ const login = async (req, res, next) => {
     AuthService.cleanUpExpiredSessions();
 
     /* response */
-    res.json({
-        token: await AuthService.signAuthToken(user, req.ip),
+    res.cookie(authConfig.cookieKey, await AuthService.signAuthToken(user, req.ip)).json({
         user: UserTransformer.make(user),
     });
 };
@@ -180,14 +180,14 @@ const login = async (req, res, next) => {
  * @param {String} req.headers['x-access-token']
  */
 const getUser = async (req, res, next) => {
-    const user = await AuthService.getUser(req.headers['x-access-token']);
+    const authorizedUser = await AuthService.getUser(req.headers['x-access-token']);
 
-    if (!user) {
+    if (!authorizedUser) {
         return next(new UnauthorizedHttpException('Invalid json web token.'));
     }
 
     res.json({
-        user: UserTransformer.make(user),
+        user: UserTransformer.make(authorizedUser),
     });
 };
 

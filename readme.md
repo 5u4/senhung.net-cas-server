@@ -118,7 +118,6 @@ REQUSET:
 RESPONSE:
 
 {
-    "token": "somerandomjsonwebtoken",
     "user": {
         "id": "5b9ec3fbbea9303db19896a2",
         "username": "myusername",
