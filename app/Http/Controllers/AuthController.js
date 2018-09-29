@@ -125,6 +125,8 @@ const verifyEmail = async (req, res, next) => {
 
     await user.save();
 
+    MailService.sendVerifySuccessEmail(user.email);
+
     const token = await AuthService.signAuthToken(user, req.ip);
 
     res.status(200).cookie('authtoken', token).send('Your email is now verified!');

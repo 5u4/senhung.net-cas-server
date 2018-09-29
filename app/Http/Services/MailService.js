@@ -28,15 +28,42 @@ const transporter = nodemailer.createTransport(transportConfigs);
  * @param {String} email 
  */
 const sendVerifyEmail = async (email, verificationLink) => {
-    const html = await ejs.renderFile(__dirname + '/../../../resources/views/mail/emailVerification.ejs', {
+    const subject = 'Welcome to senhung.net 😆';
+    const text    = 'Please click on the link to verify your email: ' + verificationLink;
+    const html    = await ejs.renderFile(__dirname + '/../../../resources/views/mail/emailVerification.ejs', {
         verificationLink: verificationLink,
     });
 
+    await sendEmail(email, subject, text, html);
+};
+
+/**
+ * Sent a verify successful email to given email address
+ * 
+ * @param {String} email 
+ */
+const sendVerifySuccessEmail = async (email) => {
+    const subject = 'Thank you for registering senhung.net!';
+    const text    = 'You now can freely use all apps under senhung.net. Thank you very much for registering!';
+    const html    = await ejs.renderFile(__dirname + '/../../../resources/views/mail/emailValidationSuccess.ejs');
+
+    await sendEmail(email, subject, text, html);
+};
+
+/**
+ * Send an email
+ * 
+ * @param {String} email The email destination
+ * @param {String} subject The email subject
+ * @param {String} text The text format of email
+ * @param {String} html The html format of email
+ */
+const sendEmail = async (email, subject, text, html) => {
     const mailOptions = {
         from: mailConfig.gmail.from,
         to: email,
-        subject: 'Welcome to senhung.net 😆',
-        text: 'Please click on the link to verify your email: ' + verificationLink,
+        subject: subject,
+        text: text,
         html: html,
     };
 
@@ -45,4 +72,5 @@ const sendVerifyEmail = async (email, verificationLink) => {
 
 module.exports = {
     sendVerifyEmail,
+    sendVerifySuccessEmail,
 };
