@@ -1,4 +1,8 @@
-# senhung.net authentication
+# senhung.net central authentication service
+
+![Travis (.org)](https://img.shields.io/travis/senhungwong/senhung.net-cas-server.svg?style=flat-square)
+![GitHub](https://img.shields.io/github/license/senhungwong/senhung.net-cas-server.svg?style=flat-square)
+![GitHub tag](https://img.shields.io/github/tag/senhungwong/senhung.net-cas-server.svg?style=flat-square)
 
 ## Description
 
