@@ -1,22 +1,21 @@
 {
   "name": "senhung.net-auth",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "👤 senhung.net apps authentication API",
   "main": "main.js",
   "scripts": {
-    "start": "nodemon",
     "test": "mocha tests --recursive"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/senhungwong/senhung.net-auth"
+    "url": "git+https://github.com/senhungwong/senhung.net-cas-server.git"
   },
   "author": "Senhung Wong <0x53656e@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/senhungwong/senhung.net-auth/issues"
+    "url": "https://github.com/senhungwong/senhung.net-cas-server.git/issues"
   },
-  "homepage": "https://github.com/senhungwong/senhung.net-auth#readme",
+  "homepage": "https://github.com/senhungwong/senhung.net-cas-server.git#readme",
   "dependencies": {
     "@senhung/http-exceptions": "^1.1.1",
     "bcrypt": "^3.0.0",
