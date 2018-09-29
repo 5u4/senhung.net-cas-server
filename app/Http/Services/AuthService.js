@@ -21,17 +21,21 @@ const isCorrectCredential = async (user, testPassword) => {
  * 
  * Expire time can be set at /configs/jwt.expiresIn
  *
- * @param {String} userId The user that is going to be signed with a token
+ * @param {User} user The user that is going to be signed with a token
  * @param {String} ip The client ip
  *
  * @returns {String} The auth token
  */
-const signAuthToken = async (userId, ip) => {
-    const token = jwt.sign({id: userId}, jwtConfig.jwtsecret, {
+const signAuthToken = async (user, ip) => {
+    const token = jwt.sign({id: user._id}, jwtConfig.jwtsecret, {
         expiresIn: jwtConfig.expiresIn,
     });
 
-    await signSession(token, ip, jwtConfig.expiresIn);
+    await signSession(token, ip, jwtConfig.expiresIn, user);
+
+    user.lastLogin = new Date().getTime() / 1000 | 0;
+
+    await user.save();
 
     return token;
 };
@@ -42,14 +46,18 @@ const signAuthToken = async (userId, ip) => {
  * @param {String} token The user token
  * @param {String} ip The client ip
  * @param {Number} extendedSeconds The extend time in second
+ * @param {User} user The user who holds the token
  */
-const signSession = async (token, ip, extendedSeconds) => {
+const signSession = async (token, ip, extendedSeconds, user) => {
     const expiredAt = new Date().getTime() / 1000 | 0 + extendedSeconds;
 
     await Session.create({
         token: token,
         ip: ip,
         expired_at: expiredAt,
+        user_id: user._id.toString(),
+        username: user.username,
+        email: user.email,
     });
 };
 

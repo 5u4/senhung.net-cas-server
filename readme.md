@@ -75,6 +75,33 @@ RESPONSE:
 }
 ```
 
+**Send verify email link**
+
+```
+POST {{senhung-auth-host}}/v1/api/auth/verify/email/link
+
+REQUEST:
+
+{
+    "email": "alex@senhung.net",
+    "username": "myusername"
+}
+
+RESPONSE:
+
+200: HTTP OK
+```
+
+**Verify email**
+
+```
+GET {{senhung-auth-host}}/v1/api/auth/verify/email?userId=the-user-id&verificationCode=the-verification-code
+
+RESPONSE:
+
+200: HTTP OK
+```
+
 **Login**
 
 ```

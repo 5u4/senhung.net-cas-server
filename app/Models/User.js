@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
  * @property {String} username
  * @property {String} email
  * @property {String} password
- * @property {Boolean} isVerified
+ * @property {String} emailVerificationCode
+ * @property {Boolean} isEmailVerified
  */
 const User = new mongoose.Schema({
     username: {
@@ -26,14 +27,18 @@ const User = new mongoose.Schema({
         required: true,
     },
 
-    isVerified: {
-        type: Boolean,
-        default: false,
-    },
-
     lastLogin: {
         type: Number,
         default: null,
+    },
+
+    emailVerificationCode: {
+        type: String,
+    },
+
+    isEmailVerified: {
+        type: Boolean,
+        default: false,
     },
 });
 

@@ -33,13 +33,16 @@ const isEmailBeenTaken = async (email) => {
  *
  * @returns {User} The newly created user
  */
-const createUser = async function(username, email, password) {
+const createUser = async (username, email, password) => {
     const hashedPassword = await bcrypt.hash(password, authConfig.saltRounds);
+
+    const emailVerificationCode = generateEmailVerificationCode();
 
     const user = new User({
         username: username,
         email: email,
         password: hashedPassword,
+        emailVerificationCode: emailVerificationCode,
     });
 
     await user.save();
@@ -47,8 +50,31 @@ const createUser = async function(username, email, password) {
     return user;
 };
 
+/**
+ * Refresh email verification code
+ * 
+ * @param {User} user The user that will be refreshed verification code
+ */
+const refreshEmailVerificationCode = async (user) => {
+    const emailVerificationCode = generateEmailVerificationCode();
+
+    user.emailVerificationCode = emailVerificationCode;
+
+    await user.save();
+};
+
+/**
+ * Generate an email verification code
+ */
+const generateEmailVerificationCode = () => {
+    return [
+        ...Array(authConfig.verifications.emailVerificationCodeLength)
+    ].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+};
+
 module.exports = {
     isUsernameBeenTaken,
     isEmailBeenTaken,
     createUser,
+    refreshEmailVerificationCode,
 };

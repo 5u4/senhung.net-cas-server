@@ -35,6 +35,31 @@ const registerValidator = validate({
     },
 });
 
+const sendVerifiyEmailValidator = validate({
+    body: {
+        username: Joi
+            .string()
+            .required(),
+        
+        email: Joi
+            .string()
+            .email()
+            .required(),
+    },
+});
+
+const verifyEmailValidator = validate({
+    query: {
+        userId: Joi
+            .string()
+            .required(),
+        
+        verificationCode: Joi
+            .string()
+            .required(),
+    },
+});
+
 const loginValidator = validate({
     body: {
         username: Joi
@@ -61,6 +86,8 @@ module.exports = {
     checkEmailExistenceValidator,
     checkUsernameExistenceValidator,
     registerValidator,
+    sendVerifiyEmailValidator,
+    verifyEmailValidator,
     loginValidator,
     getUserValidator,
 };
