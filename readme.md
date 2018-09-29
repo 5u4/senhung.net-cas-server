@@ -8,6 +8,10 @@
 
 An authentication server for all senhung.net user register/login.
 
+## Server
+
+Hosted on Heroku at https://senhung-cas.herokuapp.com/
+
 ## Rules
 
 **Username**
