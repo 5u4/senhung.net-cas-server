@@ -143,7 +143,7 @@ describe('Auth controller tests', function() {
                 });
 
             res.should.have.status(200);
-            res.should.have.cookie(authConfig.cookieKey);
+            res.should.have.cookie(authConfig.cookie.key);
 
             user = await User.findById(user._id);
 
@@ -218,10 +218,9 @@ describe('Auth controller tests', function() {
             
             let token = login.header['set-cookie'][0];
 
-            token = token.substring(
-                token.indexOf('=') + 1,
-                token.lastIndexOf(';')
-            )
+            token = token.match('(^|;)\\s*' + authConfig.cookie.key + '\\s*=\\s*([^;]+)')[0];
+
+            token = token.substring(token.indexOf('=') + 1);
 
             const res = await chai.request(server)
                 .get('/v1/api/auth/users')

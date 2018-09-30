@@ -5,5 +5,8 @@ module.exports = {
     verifications: {
         emailVerificationCodeLength: 120,
     },
-    cookieKey: env.COOKIE_KEY,
+    cookie: {
+        key: env.COOKIE_KEY,
+        domain: env.COOKIE_DOMAIN,
+    }
 };

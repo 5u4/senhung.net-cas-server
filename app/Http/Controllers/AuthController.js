@@ -130,7 +130,9 @@ const verifyEmail = async (req, res, next) => {
 
     const token = await AuthService.signAuthToken(user, req.ip);
 
-    res.status(200).cookie(authConfig.cookieKey, token).send('Your email is now verified!');
+    res.status(200).cookie(authConfig.cookie.key, token, {
+        domain: authConfig.cookie.domain,
+    }).send('Your email is now verified!');
 };
 
 /**
@@ -169,7 +171,9 @@ const login = async (req, res, next) => {
     AuthService.cleanUpExpiredSessions();
 
     /* response */
-    res.cookie(authConfig.cookieKey, await AuthService.signAuthToken(user, req.ip)).json({
+    res.cookie(authConfig.cookie.key, await AuthService.signAuthToken(user, req.ip), {
+        domain: authConfig.cookie.domain,
+    }).json({
         user: UserTransformer.make(user),
     });
 };
